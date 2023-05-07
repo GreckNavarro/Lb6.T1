@@ -16,8 +16,11 @@ public class HealthBarController : MonoBehaviour
     private float TargetWidth => currentValue * _fullWidth / maxValue;
     private Coroutine updateHealthBarCoroutine;
 
+
+    /* Creamos dos Acciones */
     public event Action onHit;
     public event Action onDeath;
+
 
     private void Start() {
         currentValue = maxValue;
@@ -28,6 +31,10 @@ public class HealthBarController : MonoBehaviour
     /// Metodo <c>UpdateHealth</c> actualiza la vida del personaje de manera visual. Recibe una cantidad de vida modificada.
     /// </summary>
     /// <param name="amount">El valor de vida modificada.</param>
+    /// 
+
+
+    /* Función encargada de actualizar la barra visual del personaje*/
     public void UpdateHealth(int amount){
         currentValue = Mathf.Clamp(currentValue + amount, 0, maxValue);
         onHit?.Invoke();
@@ -42,6 +49,8 @@ public class HealthBarController : MonoBehaviour
         }
     }
 
+    /* Corrutina encargada de saber cuál es la barra que se modificará, la segunda se encarga de animar esta, y ajusta 
+     el ancho de ambas para que se pueda ver bien */
     IEnumerator AdjustWidthBar(int amount){
         RectTransform targetBar = amount >= 0 ? modifiedBar : healthBar;
         RectTransform animatedBar = amount >= 0 ? healthBar : modifiedBar;
@@ -56,6 +65,8 @@ public class HealthBarController : MonoBehaviour
         animatedBar.sizeDelta = SetWidth(animatedBar,TargetWidth);
     }
 
+    /* Función que se utiliza en la corrutina Anterior, para poder ajustar el ancho de una barra de vida del personaje o enemigo
+     * en pantalla */
     private Vector2 SetWidth(RectTransform t, float width){
         return new Vector2(width, t.rect.height);
     }
